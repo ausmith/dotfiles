@@ -5,13 +5,14 @@ set expandtab
 set shiftwidth=2
 set softtabstop=2
 filetype plugin indent on
+au BufNewFile,BufRead *.json set ft=json
+au BufNewFile,BufRead *.md set ft=markdown
 set wildmode=longest,list,full
 set wildmenu
 match ErrorMsg '\%>110v.\+'
 set ruler
 color desert
 set pastetoggle=<F2>
-let g:vimrubocop_config = '~/dev/ruby-style-guide/.rubocop.yml'
 vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
 map q: :q
@@ -82,3 +83,12 @@ if has('eval') && has('autocmd')
     echohl None
   endfunction
 endif
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g_syntastic_check_on_wq = 0

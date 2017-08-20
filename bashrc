@@ -23,8 +23,6 @@ NO_COLOUR="\[\033[0m\]"
 # to get the ruby version from rvm # $LIGHT_GRAY\$(~/.rvm/bin/rvm-prompt i v g)$NO_COLOUR
 PS1="$RED[\t]$NO_COLOUR $GREEN\u@\h$NO_COLOUR:\w$YELLOW\$(__git_ps1)$NO_COLOUR\n\$ "
 
-export EDITOR="vim"
-
 # Add color to ls and give ll alias
 alias ls='ls -GFh'
 alias ll='ls -l'
@@ -49,3 +47,34 @@ export PATH="$PATH:$EC2_HOME/bin"
 
 # klusters for determining what kubernetes clusters are available
 alias klusters="kubectl config get-contexts | tr -s ' ' | cut -d ' ' -f 2 | sort"
+
+# <SSH agent setup>: for inside my docker dev environment
+SSH_ENV = "$HOME/.ssh/environment"
+
+function start_agent {
+  echo "Initializing new SSH agent..."
+  /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+  echo succeeded
+  chmod 0600 "${SSH_ENV}"
+  . "${SSH_ENV}" > /dev/null
+  /usr/bin/ssh-add
+}
+
+# Source SSH settings, if applicable
+
+if [ -f "${SSH_ENV}" ]; then
+  . "${SSH_ENV}" > /dev/null
+
+  ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ | grep -e '^root' > /dev/null
+  if [[ 0 -eq $? ]]; then
+    echo "ssh-agent owned by root, destroy!"
+    sudo kill -9 ${SSH_AGENT_PID}
+  fi
+
+  ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || { start_agent; }
+else
+  start_agent;
+fi
+
+export USER=$(whoami)
+# </SSH agent setup>
