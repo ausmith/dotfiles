@@ -47,5 +47,8 @@ export PATH="$PATH:$EC2_HOME/bin"
 # find . -type d -depth 2 -name '.git' -exec git --git-dir={} --work-tree=$PWD/{}/.. checkout master \;
 # find . -type d -depth 2 -name '.git' -exec git --git-dir={} --work-tree=$PWD/{}/.. pull dev master \;
 
+# Starts up the docker based dev environment
+alias devenv="docker exec --user=${USER} -it dev bash"
+
 # klusters for determining what kubernetes clusters are available
 alias klusters="kubectl config get-contexts | tr -s ' ' | cut -d ' ' -f 2 | sort"
