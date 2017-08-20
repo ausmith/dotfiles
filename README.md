@@ -23,3 +23,10 @@ make profile
 make git
 make vimrc
 ```
+
+If you want to modify where the files get put, you can call the
+`make` targets with a different `HOME` directory.
+
+```
+HOME=/my/special/dir make vimrc
+```
