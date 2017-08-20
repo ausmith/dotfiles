@@ -11,3 +11,15 @@ is about to be replaced and give that info before running.
 settings specific to my git username
 2. ...
 3. Profit
+
+## Usage
+
+```
+make help
+...
+
+make bashrc
+make profile
+make git
+make vimrc
+```
